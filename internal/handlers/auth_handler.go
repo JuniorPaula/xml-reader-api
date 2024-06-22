@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 	"xml-reader-api/internal/repository"
@@ -49,19 +48,14 @@ func (h *AuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		utils.ErrorJSON(w, errors.New("invalid credentials"), http.StatusUnauthorized)
 		return
 	}
-	fmt.Println("exp", jwtExp)
+
 	// generate jwt token
-	_, token, err := jwt.Encode(map[string]interface{}{
+	_, token, _ := jwt.Encode(map[string]interface{}{
 		"id":    user.ID,
 		"email": user.Email,
 		"name":  user.Name,
 		"exp":   time.Now().Add(time.Hour * time.Duration(jwtExp)).Unix(),
 	})
-	if err != nil {
-		fmt.Println("error generating token", err)
-		utils.ErrorJSON(w, err, http.StatusInternalServerError)
-		return
-	}
 
 	data := struct {
 		ID          int64  `json:"id"`

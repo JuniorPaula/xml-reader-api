@@ -2,12 +2,15 @@ package routes
 
 import (
 	"database/sql"
+	"net/http"
 	"xml-reader-api/internal/config"
 	"xml-reader-api/internal/handlers"
+	authMiddleware "xml-reader-api/internal/middleware"
 	"xml-reader-api/internal/repository"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/jwtauth"
 )
 
 func NewRoutes(db *sql.DB, cfg *config.Config) *chi.Mux {
@@ -21,11 +24,16 @@ func NewRoutes(db *sql.DB, cfg *config.Config) *chi.Mux {
 	userHandler := handlers.NewUserHandler(userDB)
 	authHandler := handlers.NewAuthHandler(userDB)
 
-	r.Route("/api/v1", func(r chi.Router) {
-		r.Post("/signup", userHandler.CreateUserHandler)
-		r.Post("/login", authHandler.LoginHandler)
+	r.Post("/signup", userHandler.CreateUserHandler)
+	r.Post("/login", authHandler.LoginHandler)
 
-		// Protected routes
+	r.Route("/", func(r chi.Router) {
+		r.Use(jwtauth.Verifier(cfg.TokenAuth))
+		r.Use(authMiddleware.AuthenticatorMiddleware)
+
+		r.Get("/foo", func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("foo"))
+		})
 	})
 
 	return r

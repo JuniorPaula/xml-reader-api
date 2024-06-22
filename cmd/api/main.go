@@ -21,7 +21,7 @@ func main() {
 	defer db.Close()
 	// Automatically migrate the database
 	config.AutoMigrate(db)
-	fmt.Printf("cfg %+v", cfg)
+
 	routes := routes.NewRoutes(db, cfg)
 
 	// Listen and serve the API

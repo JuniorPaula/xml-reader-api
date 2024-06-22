@@ -5,6 +5,7 @@ go 1.22.4
 require (
 	github.com/go-chi/chi v1.5.5
 	github.com/go-chi/jwtauth v1.2.0
+	github.com/lestrrat-go/jwx v1.1.0
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/spf13/viper v1.19.0
 	golang.org/x/crypto v0.24.0
@@ -17,7 +18,6 @@ require (
 	github.com/lestrrat-go/backoff/v2 v2.0.7 // indirect
 	github.com/lestrrat-go/httpcc v1.0.0 // indirect
 	github.com/lestrrat-go/iter v1.0.0 // indirect
-	github.com/lestrrat-go/jwx v1.1.0 // indirect
 	github.com/lestrrat-go/option v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
