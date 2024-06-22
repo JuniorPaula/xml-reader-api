@@ -3,10 +3,10 @@ package entity
 import "golang.org/x/crypto/bcrypt"
 
 type User struct {
-	ID       int    `json:"id"`
+	ID       int64  `json:"id"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Password string `json:"password"`
+	Password string `json:"-"`
 }
 
 func NewUser(name, email, password string) (*User, error) {

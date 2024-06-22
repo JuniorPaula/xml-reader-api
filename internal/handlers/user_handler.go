@@ -56,7 +56,7 @@ func (h *UserHandler) CreateUserHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	err = h.UserDB.CreateUser(user.Name, user.Email, user.Password)
+	ltsID, err := h.UserDB.CreateUser(user.Name, user.Email, user.Password)
 	if err != nil {
 		Payload := Payload{
 			Message: "Failed to create user",
@@ -67,6 +67,7 @@ func (h *UserHandler) CreateUserHandler(w http.ResponseWriter, r *http.Request) 
 		json.NewEncoder(w).Encode(Payload)
 		return
 	}
+	user.ID = ltsID
 
 	Payload := Payload{
 		Message: "User created successfully",
