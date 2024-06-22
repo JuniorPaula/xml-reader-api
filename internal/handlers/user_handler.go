@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 	"xml-reader-api/internal/entity"
 	"xml-reader-api/internal/repository"
 )
@@ -58,6 +59,16 @@ func (h *UserHandler) CreateUserHandler(w http.ResponseWriter, r *http.Request) 
 
 	ltsID, err := h.UserDB.CreateUser(user.Name, user.Email, user.Password)
 	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			Payload := Payload{
+				Message: "Email already exists",
+				Error:   true,
+			}
+			w.WriteHeader(http.StatusConflict)
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(Payload)
+			return
+		}
 		Payload := Payload{
 			Message: "Failed to create user",
 			Error:   true,
