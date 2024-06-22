@@ -8,9 +8,11 @@ import (
 	"xml-reader-api/internal/routes"
 )
 
-const port = "6969"
-
 func main() {
+	cfg, err := config.LoadEnv(".")
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Create a new database connection
 	db, err := config.ConnectDatabase()
 	if err != nil {
@@ -19,10 +21,10 @@ func main() {
 	defer db.Close()
 	// Automatically migrate the database
 	config.AutoMigrate(db)
-
-	routes := routes.NewRoutes(db)
+	fmt.Printf("cfg %+v", cfg)
+	routes := routes.NewRoutes(db, cfg)
 
 	// Listen and serve the API
-	fmt.Printf("Server running on port %s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, routes))
+	fmt.Printf("Server running on port %s\n", cfg.Port)
+	log.Fatal(http.ListenAndServe(":"+cfg.Port, routes))
 }
