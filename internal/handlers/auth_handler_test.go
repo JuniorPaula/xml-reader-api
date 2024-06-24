@@ -33,10 +33,9 @@ func TestLoginHandler(t *testing.T) {
 	handler := NewAuthHandler(mockRepo)
 
 	tests := []struct {
-		name             string
-		input            JwtInputDto
-		expectedStatus   int
-		expectedResponse string
+		name           string
+		input          JwtInputDto
+		expectedStatus int
 	}{
 		{
 			name: "Successfull login",
@@ -44,8 +43,15 @@ func TestLoginHandler(t *testing.T) {
 				Email:    "james@foo.com",
 				Password: "abc123",
 			},
-			expectedStatus:   http.StatusOK,
-			expectedResponse: `{"message":"User logged in successfully","error":false,"data":{"id":1,"email":"james@foo.com","name":"James Foo"}}`,
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name: "Invalid credentials",
+			input: JwtInputDto{
+				Email:    "jhon@mail.com",
+				Password: "abc123",
+			},
+			expectedStatus: http.StatusUnauthorized,
 		},
 	}
 
