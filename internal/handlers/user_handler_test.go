@@ -65,6 +65,36 @@ func TestCreateUserHandler(t *testing.T) {
 			expectedStatus:   http.StatusConflict,
 			expectedResponse: `{"message":"email already exists","error":true}`,
 		},
+		{
+			name: "Invalid input data - empty name",
+			input: CreateUserDto{
+				Name:     "",
+				Email:    "invalid-email",
+				Password: "1234",
+			},
+			expectedStatus:   http.StatusBadRequest,
+			expectedResponse: `{"message":"name cannot be empty","error":true}`,
+		},
+		{
+			name: "Invalid input data - invalid email",
+			input: CreateUserDto{
+				Name:     "Jhon Doe",
+				Email:    "invalid-email",
+				Password: "1234",
+			},
+			expectedStatus:   http.StatusBadRequest,
+			expectedResponse: `{"message":"invalid email","error":true}`,
+		},
+		{
+			name: "Invalid input data - empty email",
+			input: CreateUserDto{
+				Name:     "Jhon Doe",
+				Email:    "",
+				Password: "1234",
+			},
+			expectedStatus:   http.StatusBadRequest,
+			expectedResponse: `{"message":"email cannot be empty","error":true}`,
+		},
 	}
 
 	for _, tt := range tests {

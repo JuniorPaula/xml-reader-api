@@ -30,13 +30,18 @@ func (h *UserHandler) CreateUserHandler(w http.ResponseWriter, r *http.Request) 
 	var input CreateUserDto
 	err := utils.ReadJSON(w, r, &input)
 	if err != nil {
-		utils.ErrorJSON(w, err, http.StatusBadRequest)
+		utils.ErrorJSON(w, err, http.StatusUnprocessableEntity)
 		return
 	}
 
 	user, err := entity.NewUser(input.Name, input.Email, input.Password)
 	if err != nil {
-		utils.ErrorJSON(w, err, http.StatusUnprocessableEntity)
+		utils.ErrorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	if err := user.Validate(); err != nil {
+		utils.ErrorJSON(w, err, http.StatusBadRequest)
 		return
 	}
 
