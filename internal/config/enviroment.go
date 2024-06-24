@@ -10,10 +10,12 @@ import (
 var cfg *Config
 
 type Config struct {
-	Port      string `mapstructure:"PORT"`
-	JWTSecret string `mapstructure:"JWT_SECRET"`
-	JWTExp    int    `mapstructure:"JWT_EXP"`
-	TokenAuth *jwtauth.JWTAuth
+	Port         string `mapstructure:"PORT"`
+	DB_NAME      string `mapstructure:"DB_NAME"`
+	DB_TEST_NAME string `mapstructure:"DB_TEST_NAME"`
+	JWTSecret    string `mapstructure:"JWT_SECRET"`
+	JWTExp       int    `mapstructure:"JWT_EXP"`
+	TokenAuth    *jwtauth.JWTAuth
 }
 
 func LoadEnv(path string) (*Config, error) {

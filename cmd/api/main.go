@@ -14,7 +14,7 @@ func main() {
 		log.Fatal(err)
 	}
 	// Create a new database connection
-	db, err := config.ConnectDatabase()
+	db, err := config.ConnectDatabase(cfg.DB_NAME)
 	if err != nil {
 		log.Fatal(err)
 	}
