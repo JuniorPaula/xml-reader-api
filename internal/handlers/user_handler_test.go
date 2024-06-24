@@ -55,6 +55,16 @@ func TestCreateUserHandler(t *testing.T) {
 			expectedStatus:   http.StatusCreated,
 			expectedResponse: `{"message":"User created successfully","error":false,"data":{"id":1,"name":"James Foo","email":"james@foo.com"}}`,
 		},
+		{
+			name: "Email Already Exists",
+			input: CreateUserDto{
+				Name:     "Jhon Doe",
+				Email:    "existing@user.com",
+				Password: "1234",
+			},
+			expectedStatus:   http.StatusConflict,
+			expectedResponse: `{"message":"email already exists","error":true}`,
+		},
 	}
 
 	for _, tt := range tests {
