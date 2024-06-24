@@ -53,6 +53,14 @@ func TestLoginHandler(t *testing.T) {
 			},
 			expectedStatus: http.StatusUnauthorized,
 		},
+		{
+			name: "Invalid credentials",
+			input: JwtInputDto{
+				Email:    "james@foo.com",
+				Password: "wrongpassword",
+			},
+			expectedStatus: http.StatusUnauthorized,
+		},
 	}
 
 	for _, tt := range tests {
