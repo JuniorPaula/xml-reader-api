@@ -1,6 +1,18 @@
 package entity
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"errors"
+	"regexp"
+
+	"golang.org/x/crypto/bcrypt"
+)
+
+var (
+	ErrEmptyName     = errors.New("name cannot be empty")
+	ErrEmptyEmail    = errors.New("email cannot be empty")
+	ErrEmptyPassword = errors.New("password cannot be empty")
+	ErrInvalidEmail  = errors.New("invalid email")
+)
 
 type User struct {
 	ID       int64  `json:"id"`
@@ -20,6 +32,27 @@ func NewUser(name, email, password string) (*User, error) {
 		Email:    email,
 		Password: string(hash),
 	}, nil
+}
+
+func (u *User) Validate() error {
+	if len(u.Name) < 3 {
+		return ErrEmptyName
+	}
+	if u.Email == "" {
+		return ErrEmptyEmail
+	}
+	if !isEmailValid(u.Email) {
+		return ErrInvalidEmail
+	}
+	if len(u.Password) < 4 {
+		return ErrEmptyPassword
+	}
+	return nil
+}
+
+func isEmailValid(email string) bool {
+	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+	return emailRegex.MatchString(email)
 }
 
 func (u *User) ValidatePassword(password string) bool {
