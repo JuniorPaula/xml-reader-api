@@ -2,7 +2,6 @@ package routes
 
 import (
 	"database/sql"
-	"net/http"
 	"xml-reader-api/internal/config"
 	"xml-reader-api/internal/handlers"
 	authMiddleware "xml-reader-api/internal/middleware"
@@ -12,6 +11,9 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/jwtauth"
 )
+
+const FILEPATH = "./data/Reconfile_fornecedores.xlsx"
+const SHEETNAME = "Planilha1"
 
 func NewRoutes(db *sql.DB, cfg *config.Config) *chi.Mux {
 	r := chi.NewRouter()
@@ -24,6 +26,9 @@ func NewRoutes(db *sql.DB, cfg *config.Config) *chi.Mux {
 	userHandler := handlers.NewUserHandler(userDB)
 	authHandler := handlers.NewAuthHandler(userDB)
 
+	supplierDB := repository.NewSupplierRepository(FILEPATH, SHEETNAME)
+	supplierHandler := handlers.NewSupplierHandler(supplierDB)
+
 	r.Post("/signup", userHandler.CreateUserHandler)
 	r.Post("/login", authHandler.LoginHandler)
 
@@ -31,9 +36,7 @@ func NewRoutes(db *sql.DB, cfg *config.Config) *chi.Mux {
 		r.Use(jwtauth.Verifier(cfg.TokenAuth))
 		r.Use(authMiddleware.AuthenticatorMiddleware)
 
-		r.Get("/foo", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("foo"))
-		})
+		r.Get("/suppliers", supplierHandler.GetSuppliersHandler)
 	})
 
 	return r
