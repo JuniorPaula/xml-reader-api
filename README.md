@@ -8,6 +8,7 @@ Alem da leitura do arquivo a aplicação ainda conta com sistema de autenticaç�
 ### Dependências
 
 [Golang] https://go.dev/doc/install
+
 [SQLite3] https://www.sqlite.org/
 
 ## Referências
@@ -24,7 +25,7 @@ Alem da leitura do arquivo a aplicação ainda conta com sistema de autenticaç�
 
 ### Modo de usar
 ```bash
-$ git clone url
+$ git clone https://github.com/JuniorPaula/xml-reader-api.git
 ```
 
 ```bash
@@ -125,10 +126,12 @@ $ go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out
 [GET] `/suppliers`
 - Header
 `Authorization` 
+
 `Bearer {token}`
 
 - Query
 `limit` default = 200
+
 `offset` default = 0
 
 **Resposta**
