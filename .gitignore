@@ -1,4 +1,5 @@
 xml_reader.db
 /internal/repository/xml_reader_test.db
 coverage.out
+app
 .env
