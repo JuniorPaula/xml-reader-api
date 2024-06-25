@@ -48,6 +48,12 @@ $ go build -o app ./cmd/api/main.go && ./app
 $ go test -v ./...
 ```
 
+### Teste Race Condintion
+
+```bash
+$ go test -v ./... -race
+```
+
 #### Cobertura de testes
 ```bash
 $ go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out
