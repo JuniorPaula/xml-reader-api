@@ -125,11 +125,13 @@ $ go test ./... -coverprofile=coverage.out && go tool cover -html=coverage.out
 #### Login
 [GET] `/suppliers`
 - Header
+
 `Authorization` 
 
 `Bearer {token}`
 
 - Query
+
 `limit` default = 200
 
 `offset` default = 0
