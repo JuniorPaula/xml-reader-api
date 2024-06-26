@@ -19,7 +19,7 @@ func LoadSupplierList(dataChannel chan models.Supplier, supplierList *[]models.S
 				return
 			}
 			*supplierList = append(*supplierList, data)
-		case <-time.After(1 * time.Second):
+		case <-time.After(5 * time.Second):
 			fmt.Println("Timeout")
 			return
 		}
